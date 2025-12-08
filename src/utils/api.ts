@@ -13,10 +13,10 @@ export const apiRequest = async <T>(
 ): Promise<ApiResponse<T>> => {
   const token = localStorage.getItem('superAdminToken');
 
-  const headers: HeadersInit = {
+  const headers = {
     'Content-Type': 'application/json',
-    ...options.headers,
-  };
+    ...(options.headers as Record<string, string>),
+  } as Record<string, string>;
 
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
