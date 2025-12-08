@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { apiRequest, getAuthToken, logout } from '@/utils/api';
-import { Store, TrendingUp, Users, Package, ShoppingBag, DollarSign, Layers } from 'lucide-react';
+import { apiRequest, getAuthToken } from '@/utils/api';
+import { Store, TrendingUp, Users, Package, ShoppingBag, DollarSign, Layers, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 
 interface DashboardData {
@@ -48,7 +48,6 @@ export default function DashboardPage() {
       router.push('/login');
       return;
     }
-
     fetchDashboard();
   }, [router]);
 
@@ -66,23 +65,23 @@ export default function DashboardPage() {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    router.push('/login');
-  };
-
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-600"></div>
+          <p className="text-slate-600">Loading dashboard...</p>
+        </div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-red-600">{error}</div>
+      <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="bg-red-50 border border-red-200 rounded-xl p-6 max-w-md">
+          <p className="text-red-700 font-medium">{error}</p>
+        </div>
       </div>
     );
   }
@@ -90,147 +89,176 @@ export default function DashboardPage() {
   if (!data) return null;
 
   const summaryCards = [
-    { title: 'Total Stores', value: data.summary.total_stores, icon: Store, color: 'bg-blue-500' },
-    { title: 'Total Customers', value: data.summary.total_customers, icon: Users, color: 'bg-green-500' },
-    { title: 'Total Revenue', value: `₹${data.summary.total_revenue.toLocaleString()}`, icon: DollarSign, color: 'bg-purple-500' },
-    { title: 'Total Orders', value: data.summary.total_orders, icon: ShoppingBag, color: 'bg-orange-500' },
-    { title: 'Categories', value: data.summary.total_categories, icon: Layers, color: 'bg-pink-500' },
-    { title: 'Products', value: data.summary.total_products, icon: Package, color: 'bg-indigo-500' },
-    { title: 'Variants', value: data.summary.total_variants, icon: TrendingUp, color: 'bg-teal-500' },
+    { title: 'Total Stores', value: data.summary.total_stores, icon: Store, color: 'from-blue-500 to-blue-600', bg: 'bg-blue-50', iconColor: 'text-blue-600' },
+    { title: 'Total Customers', value: data.summary.total_customers, icon: Users, color: 'from-green-500 to-green-600', bg: 'bg-green-50', iconColor: 'text-green-600' },
+    { title: 'Total Revenue', value: `₹${data.summary.total_revenue.toLocaleString()}`, icon: DollarSign, color: 'from-purple-500 to-purple-600', bg: 'bg-purple-50', iconColor: 'text-purple-600' },
+    { title: 'Total Orders', value: data.summary.total_orders, icon: ShoppingBag, color: 'from-orange-500 to-orange-600', bg: 'bg-orange-50', iconColor: 'text-orange-600' },
+    { title: 'Categories', value: data.summary.total_categories, icon: Layers, color: 'from-pink-500 to-pink-600', bg: 'bg-pink-50', iconColor: 'text-pink-600' },
+    { title: 'Products', value: data.summary.total_products, icon: Package, color: 'from-indigo-500 to-indigo-600', bg: 'bg-indigo-50', iconColor: 'text-indigo-600' },
+    { title: 'Variants', value: data.summary.total_variants, icon: TrendingUp, color: 'from-teal-500 to-teal-600', bg: 'bg-teal-50', iconColor: 'text-teal-600' },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Super Admin Dashboard</h1>
-            <div className="flex gap-4">
-              <Link href="/stores" className="text-blue-600 hover:text-blue-800">Stores</Link>
-              <Link href="/billing" className="text-blue-600 hover:text-blue-800">Billing</Link>
-              <button onClick={handleLogout} className="text-red-600 hover:text-red-800">
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-slate-900">Dashboard</h1>
+        <p className="text-slate-600 mt-1">Overview of your platform</p>
+      </div>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {summaryCards.map((card, index) => {
-            const Icon = card.icon;
-            return (
-              <div key={index} className="bg-white rounded-lg shadow p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm text-gray-600">{card.title}</p>
-                    <p className="text-2xl font-bold text-gray-900 mt-2">{card.value}</p>
-                  </div>
-                  <div className={`${card.color} p-3 rounded-lg`}>
-                    <Icon className="h-6 w-6 text-white" />
-                  </div>
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {summaryCards.map((card, index) => {
+          const Icon = card.icon;
+          return (
+            <div
+              key={index}
+              className="bg-white rounded-xl shadow-card p-6 border border-slate-200 hover:shadow-card-lg transition-all duration-200 group"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-slate-600 mb-1">{card.title}</p>
+                  <p className="text-2xl font-bold text-slate-900">{card.value}</p>
+                </div>
+                <div className={`${card.bg} p-3 rounded-xl group-hover:scale-110 transition-transform`}>
+                  <Icon className={`h-6 w-6 ${card.iconColor}`} />
                 </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
+      </div>
 
-        {/* Top Products */}
-        <div className="bg-white rounded-lg shadow mb-8">
-          <div className="px-6 py-4 border-b">
-            <h2 className="text-xl font-semibold text-gray-900">Top Selling Products (Last 30 Days)</h2>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Units Sold</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Revenue</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {data.top_products.length === 0 ? (
-                  <tr>
-                    <td colSpan={3} className="px-6 py-4 text-center text-gray-500">No data available</td>
-                  </tr>
-                ) : (
-                  data.top_products.map((product) => (
-                    <tr key={product.product_id}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          {product.product_image && (
-                            <img src={product.product_image} alt={product.product_name} className="h-10 w-10 rounded object-cover mr-3" />
-                          )}
-                          <span className="text-sm font-medium text-gray-900">{product.product_name}</span>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.total_sold}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">₹{product.total_revenue.toLocaleString()}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+      {/* Top Products */}
+      <div className="bg-white rounded-xl shadow-card border border-slate-200 overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-slate-900">Top Selling Products</h2>
+            <span className="text-xs text-slate-500">Last 30 Days</span>
           </div>
         </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Product</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Units Sold</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Revenue</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {data.top_products.length === 0 ? (
+                <tr>
+                  <td colSpan={3} className="px-6 py-8 text-center text-slate-500">
+                    <Package className="h-8 w-8 mx-auto mb-2 text-slate-300" />
+                    <p>No products data available</p>
+                  </td>
+                </tr>
+              ) : (
+                data.top_products.map((product) => (
+                  <tr key={product.product_id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        {product.product_image ? (
+                          <img
+                            src={product.product_image}
+                            alt={product.product_name}
+                            className="h-10 w-10 rounded-lg object-cover border border-slate-200"
+                          />
+                        ) : (
+                          <div className="h-10 w-10 rounded-lg bg-slate-100 flex items-center justify-center">
+                            <Package className="h-5 w-5 text-slate-400" />
+                          </div>
+                        )}
+                        <span className="text-sm font-medium text-slate-900">{product.product_name}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{product.total_sold}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-slate-900">₹{product.total_revenue.toLocaleString()}</td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-        {/* Stores List */}
-        <div className="bg-white rounded-lg shadow">
-          <div className="px-6 py-4 border-b">
-            <h2 className="text-xl font-semibold text-gray-900">All Stores</h2>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Store Name</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Owner</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Customers</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Revenue</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Orders</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {data.stores.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="px-6 py-4 text-center text-gray-500">No stores found</td>
-                  </tr>
-                ) : (
-                  data.stores.map((store) => (
-                    <tr key={store.store_id}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <Link href={`/stores/${store.store_id}`} className="text-sm font-medium text-blue-600 hover:text-blue-800">
-                          {store.store_name}
-                        </Link>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{store.owner_name}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{store.customer_count}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹{store.revenue.toLocaleString()}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{store.order_count}</td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`px-2 py-1 text-xs rounded-full ${store.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                          {store.is_active ? 'Active' : 'Inactive'}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <Link href={`/stores/${store.store_id}`} className="text-blue-600 hover:text-blue-800 mr-4">
-                          View
-                        </Link>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+      {/* Stores List */}
+      <div className="bg-white rounded-xl shadow-card border border-slate-200 overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-200 bg-slate-50">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold text-slate-900">All Stores</h2>
+            <Link
+              href="/stores"
+              className="text-sm text-primary-600 hover:text-primary-700 font-medium flex items-center gap-1"
+            >
+              View all
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
-      </main>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Store Name</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Owner</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Customers</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Revenue</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Orders</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-200">
+              {data.stores.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="px-6 py-8 text-center text-slate-500">
+                    <Store className="h-8 w-8 mx-auto mb-2 text-slate-300" />
+                    <p>No stores found</p>
+                  </td>
+                </tr>
+              ) : (
+                data.stores.map((store) => (
+                  <tr key={store.store_id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <Link
+                        href={`/stores/${store.store_id}`}
+                        className="text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors"
+                      >
+                        {store.store_name}
+                      </Link>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{store.owner_name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{store.customer_count}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">₹{store.revenue.toLocaleString()}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{store.order_count}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span
+                        className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${
+                          store.is_active
+                            ? 'bg-green-100 text-green-800'
+                            : 'bg-red-100 text-red-800'
+                        }`}
+                      >
+                        {store.is_active ? 'Active' : 'Inactive'}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <Link
+                        href={`/stores/${store.store_id}`}
+                        className="text-primary-600 hover:text-primary-700 font-medium transition-colors"
+                      >
+                        View
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
