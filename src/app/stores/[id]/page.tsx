@@ -11,10 +11,12 @@ import {
   ToggleRight,
   Settings,
 } from "lucide-react";
+import { useToast } from "@/components/Toast";
 
 export default function StoreDetailPage() {
   const router = useRouter();
   const params = useParams();
+  const toast = useToast();
   const storeId = params.id;
 
   const [store, setStore] = useState<any>(null);
@@ -144,19 +146,47 @@ export default function StoreDetailPage() {
   const handleSave = async () => {
     try {
       setSaving(true);
+      // Ensure all boolean fields are explicitly sent (even if false)
+      const featuresToSave = {
+        ...features,
+        // Explicitly include all boolean flags to ensure false values are sent
+        push_notifications_enabled: features.push_notifications_enabled ?? true,
+        sms_enabled: features.sms_enabled ?? true,
+        whatsapp_enabled: features.whatsapp_enabled ?? false,
+        email_enabled: features.email_enabled ?? false,
+        add_options_enabled: features.add_options_enabled ?? true,
+        coupon_codes_enabled: features.coupon_codes_enabled ?? true,
+        app_settings_enabled: features.app_settings_enabled ?? true,
+        customers_enabled: features.customers_enabled ?? true,
+        employees_enabled: features.employees_enabled ?? true,
+        home_config_enabled: features.home_config_enabled ?? true,
+        reports_enabled: features.reports_enabled ?? true,
+        branches_enabled: features.branches_enabled ?? true,
+        categories_enabled: features.categories_enabled ?? true,
+        products_enabled: features.products_enabled ?? true,
+        orders_enabled: features.orders_enabled ?? true,
+        notifications_enabled: features.notifications_enabled ?? true,
+        communication_logs_enabled: features.communication_logs_enabled ?? true,
+        billings_enabled: features.billings_enabled ?? true,
+      };
+
       const response = await apiRequest(
         `/api/v1/super-admin/stores/${storeId}/features`,
         {
           method: "PUT",
-          body: JSON.stringify(features),
+          body: JSON.stringify(featuresToSave),
         }
       );
       if (response.success) {
-        alert("Features updated successfully!");
+        toast.success("Features updated successfully!");
         fetchStore();
+      } else {
+        toast.error(
+          "Failed to update features: " + (response.message || "Unknown error")
+        );
       }
     } catch (err: any) {
-      alert("Failed to update features: " + err.message);
+      toast.error("Failed to update features: " + err.message);
     } finally {
       setSaving(false);
     }
@@ -171,16 +201,16 @@ export default function StoreDetailPage() {
     onChange: (val: boolean) => void;
     label: string;
   }) => (
-    <div className="flex items-center justify-between py-3 border-b">
-      <span className="text-sm font-medium text-gray-700">{label}</span>
+    <div className="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-700">
+      <span className="text-sm font-medium text-gray-700 dark:text-slate-300">{label}</span>
       <button
         onClick={() => onChange(!enabled)}
         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-          enabled ? "bg-blue-600" : "bg-gray-300"
+          enabled ? "bg-blue-600 dark:bg-blue-500" : "bg-gray-300 dark:bg-slate-600"
         }`}
       >
         <span
-          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+          className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-slate-200 transition-transform ${
             enabled ? "translate-x-6" : "translate-x-1"
           }`}
         />
@@ -190,22 +220,22 @@ export default function StoreDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400"></div>
       </div>
     );
   }
 
   if (error || !store) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center bg-white p-8 rounded-lg shadow">
-          <p className="text-red-600 mb-4 font-semibold">
+      <div className="min-h-screen bg-gray-50 dark:bg-slate-900 flex items-center justify-center">
+        <div className="text-center bg-white dark:bg-slate-800 p-8 rounded-lg shadow border border-slate-200 dark:border-slate-700">
+          <p className="text-red-600 dark:text-red-400 mb-4 font-semibold">
             {error || "Store not found or failed to load"}
           </p>
           <Link
             href="/stores"
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800"
+            className="inline-flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Stores
@@ -216,63 +246,65 @@ export default function StoreDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
+    <div className="min-h-screen bg-gray-50 dark:bg-slate-900">
+      <header className="bg-white dark:bg-slate-800 shadow-sm border-b dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Link
                 href="/stores"
-                className="text-blue-600 hover:text-blue-800"
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               >
                 <ArrowLeft className="h-5 w-5" />
               </Link>
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-slate-100">
                 {store.store_name}
               </h1>
             </div>
-            <Link
-              href={`/stores/${storeId}/permissions`}
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 px-4 py-2 rounded-lg hover:bg-blue-50"
-            >
-              <Settings className="h-4 w-4" />
-              Manage Permissions
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link
+                href={`/stores/${storeId}/permissions`}
+                className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 border border-blue-200 dark:border-blue-800"
+              >
+                <Settings className="h-4 w-4" />
+                Manage User Role Permissions
+              </Link>
+            </div>
           </div>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Store Info */}
-        <div className="bg-white rounded-lg shadow mb-6 p-6">
-          <h2 className="text-lg font-semibold mb-4">Store Information</h2>
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow mb-6 p-6 border border-slate-200 dark:border-slate-700">
+          <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-slate-100">Store Information</h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-600">Owner Name</p>
-              <p className="font-medium">{store.owner_name}</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">Owner Name</p>
+              <p className="font-medium text-gray-900 dark:text-slate-100">{store.owner_name}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Email</p>
-              <p className="font-medium">{store.owner_email}</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">Email</p>
+              <p className="font-medium text-gray-900 dark:text-slate-100">{store.owner_email}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Phone</p>
-              <p className="font-medium">{store.owner_phone}</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">Phone</p>
+              <p className="font-medium text-gray-900 dark:text-slate-100">{store.owner_phone}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Status</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">Status</p>
               <span
                 className={`px-2 py-1 text-xs rounded-full ${
                   store.is_active
-                    ? "bg-green-100 text-green-800"
-                    : "bg-red-100 text-red-800"
+                    ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400"
+                    : "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400"
                 }`}
               >
                 {store.is_active ? "Active" : "Inactive"}
               </span>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Billing Status</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">Billing Status</p>
               <span
                 className={`px-2 py-1 text-xs rounded-full ${
                   features.billing_status === "active"
@@ -289,20 +321,20 @@ export default function StoreDetailPage() {
               </span>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Billing Paid Until</p>
-              <p className="font-medium">
+              <p className="text-sm text-gray-600 dark:text-slate-400">Billing Paid Until</p>
+              <p className="font-medium text-gray-900 dark:text-slate-100">
                 {features.billing_paid_until
                   ? new Date(features.billing_paid_until).toLocaleDateString()
                   : "Not set"}
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Customers</p>
-              <p className="font-medium">{store.customer_count}</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">Customers</p>
+              <p className="font-medium text-gray-900 dark:text-slate-100">{store.customer_count}</p>
             </div>
             <div>
-              <p className="text-sm text-gray-600">Total Revenue</p>
-              <p className="font-medium">
+              <p className="text-sm text-gray-600 dark:text-slate-400">Total Revenue</p>
+              <p className="font-medium text-gray-900 dark:text-slate-100">
                 ₹{store.total_revenue?.toLocaleString() || 0}
               </p>
             </div>
@@ -310,8 +342,8 @@ export default function StoreDetailPage() {
         </div>
 
         {/* Billing Control */}
-        <div className="bg-white rounded-lg shadow mb-6 p-6">
-          <h2 className="text-lg font-semibold mb-4">Billing Control</h2>
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow mb-6 p-6 border border-slate-200 dark:border-slate-700">
+          <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-slate-100">Billing Control</h2>
           <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -375,18 +407,32 @@ export default function StoreDetailPage() {
           </p>
         </div>
 
-        {/* Feature Flags */}
-        <div className="bg-white rounded-lg shadow p-6">
+        {/* Store Features Section */}
+        <div className="bg-white rounded-lg shadow p-6 mb-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-semibold">Feature Access Control</h2>
+            <div>
+              <h2 className="text-lg font-semibold">Store Features</h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Control which features are available for this store. These are
+                store-level feature flags.
+              </p>
+            </div>
             <button
               onClick={handleSave}
               disabled={saving}
               className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
             >
               <Save className="h-4 w-4" />
-              {saving ? "Saving..." : "Save Changes"}
+              {saving ? "Saving..." : "Save Features"}
             </button>
+          </div>
+
+          <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
+            <p className="text-sm text-blue-700">
+              <strong>Note:</strong> Store Features control what functionality
+              is available to the store owner. User Role Permissions (managed
+              separately) control what individual staff members can do.
+            </p>
           </div>
 
           <div className="space-y-2">

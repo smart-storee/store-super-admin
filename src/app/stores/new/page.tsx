@@ -15,6 +15,8 @@ import {
   ChevronRight,
   ChevronLeft,
 } from "lucide-react";
+import { useToast } from "@/components/Toast";
+import CopyButton from "@/components/CopyButton";
 
 interface Permission {
   permission_id: number;
@@ -26,6 +28,7 @@ interface Permission {
 
 export default function NewStorePage() {
   const router = useRouter();
+  const toast = useToast();
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [permissions, setPermissions] = useState<Permission[]>([]);
@@ -171,13 +174,12 @@ export default function NewStorePage() {
       if (response.success) {
         setCreatedCredentials(response.data.owner_credentials);
         setCurrentStep(5);
+        toast.success("Store created successfully!");
       } else {
-        alert(
-          "Failed to create store: " + (response.message || "Unknown error")
-        );
+        toast.error("Failed to create store: " + (response.message || "Unknown error"));
       }
     } catch (err: any) {
-      alert("Error creating store: " + err.message);
+      toast.error("Error creating store: " + err.message);
     } finally {
       setLoading(false);
     }
@@ -203,42 +205,48 @@ export default function NewStorePage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-                <CheckCircle2 className="h-8 w-8 text-green-600" />
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
+                <CheckCircle2 className="h-8 w-8 text-green-600 dark:text-green-400" />
               </div>
-              <h1 className="text-3xl font-bold text-slate-900 mb-2">
+              <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                 Store Created Successfully!
               </h1>
-              <p className="text-slate-600">
+              <p className="text-slate-600 dark:text-slate-400">
                 The store has been created with all configured settings.
               </p>
             </div>
 
-            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 mb-6">
-              <h3 className="font-semibold text-green-900 mb-4 text-lg">
+            <div className="bg-green-50 dark:bg-green-900/20 border-2 border-green-200 dark:border-green-800 rounded-xl p-6 mb-6">
+              <h3 className="font-semibold text-green-900 dark:text-green-400 mb-4 text-lg">
                 Owner Login Credentials
               </h3>
-              <div className="space-y-3 text-sm bg-white rounded-lg p-4 border border-green-200">
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-slate-700">
+              <div className="space-y-3 text-sm bg-white dark:bg-slate-700 rounded-lg p-4 border border-green-200 dark:border-green-800">
+                <div className="flex justify-between items-center gap-4">
+                  <span className="font-medium text-slate-700 dark:text-slate-300">
                     Owner Email:
                   </span>
-                  <span className="font-mono text-slate-900">
-                    {createdCredentials.email}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-slate-900 dark:text-slate-100">
+                      {createdCredentials.email}
+                    </span>
+                    <CopyButton text={createdCredentials.email} />
+                  </div>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="font-medium text-slate-700">
+                <div className="flex justify-between items-center gap-4">
+                  <span className="font-medium text-slate-700 dark:text-slate-300">
                     Owner Password:
                   </span>
-                  <span className="font-mono text-slate-900">
-                    {createdCredentials.password}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-slate-900 dark:text-slate-100">
+                      {createdCredentials.password}
+                    </span>
+                    <CopyButton text={createdCredentials.password} />
+                  </div>
                 </div>
               </div>
-              <p className="mt-4 text-xs text-green-700 flex items-start gap-2">
+              <p className="mt-4 text-xs text-green-700 dark:text-green-400 flex items-start gap-2">
                 <span className="text-base">⚠️</span>
                 <span>
                   Please save these credentials. The owner can use these to
@@ -250,7 +258,7 @@ export default function NewStorePage() {
             <div className="flex gap-4">
               <Link
                 href="/stores"
-                className="flex-1 bg-slate-100 text-slate-700 px-6 py-3 rounded-xl hover:bg-slate-200 transition-all font-semibold text-center"
+                className="flex-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-6 py-3 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-all font-semibold text-center"
               >
                 Back to Stores
               </Link>
@@ -281,28 +289,28 @@ export default function NewStorePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <Link
             href="/stores"
-            className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-4 transition-colors"
+            className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 mb-4 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Stores
           </Link>
-          <h1 className="text-3xl font-bold text-slate-900">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
             Create New Store
           </h1>
-          <p className="text-slate-600 mt-1">
+          <p className="text-slate-600 dark:text-slate-400 mt-1">
             Complete the steps below to create a new store with all
             configurations
           </p>
         </div>
 
         {/* Progress Steps */}
-        <div className="bg-white rounded-xl shadow-card border border-slate-200 p-6 mb-6">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-card border border-slate-200 dark:border-slate-700 p-6 mb-6">
           <div className="flex items-center justify-between">
             {steps.map((step, index) => {
               const Icon = step.icon;
@@ -349,22 +357,22 @@ export default function NewStorePage() {
         </div>
 
         {/* Step Content */}
-        <div className="bg-white rounded-xl shadow-card border border-slate-200 p-8">
+        <div className="bg-white dark:bg-slate-800 rounded-xl shadow-card border border-slate-200 dark:border-slate-700 p-8">
           {/* Step 1: Basic Information */}
           {currentStep === 1 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                   Basic Store Information
                 </h2>
-                <p className="text-slate-600">
+                <p className="text-slate-600 dark:text-slate-400">
                   Enter the basic details for the store and owner
                 </p>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Store Name *
                   </label>
                   <input
@@ -374,13 +382,13 @@ export default function NewStorePage() {
                     onChange={(e) =>
                       setBasicInfo({ ...basicInfo, store_name: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="Enter store name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Owner Name *
                   </label>
                   <input
@@ -390,13 +398,13 @@ export default function NewStorePage() {
                     onChange={(e) =>
                       setBasicInfo({ ...basicInfo, owner_name: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="Owner full name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Owner Email *
                   </label>
                   <input
@@ -409,13 +417,13 @@ export default function NewStorePage() {
                         owner_email: e.target.value,
                       })
                     }
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="owner@example.com"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Owner Phone *
                   </label>
                   <input
@@ -428,13 +436,13 @@ export default function NewStorePage() {
                         owner_phone: e.target.value,
                       })
                     }
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="+1234567890"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Owner Password *
                   </label>
                   <input
@@ -447,13 +455,13 @@ export default function NewStorePage() {
                         owner_password: e.target.value,
                       })
                     }
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="Create password"
                   />
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Address
                   </label>
                   <input
@@ -462,13 +470,13 @@ export default function NewStorePage() {
                     onChange={(e) =>
                       setBasicInfo({ ...basicInfo, address: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="Store address"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     City
                   </label>
                   <input
@@ -477,13 +485,13 @@ export default function NewStorePage() {
                     onChange={(e) =>
                       setBasicInfo({ ...basicInfo, city: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="City"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     PIN Code
                   </label>
                   <input
@@ -492,7 +500,7 @@ export default function NewStorePage() {
                     onChange={(e) =>
                       setBasicInfo({ ...basicInfo, pincode: e.target.value })
                     }
-                    className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                    className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                     placeholder="PIN code"
                   />
                 </div>
@@ -504,20 +512,30 @@ export default function NewStorePage() {
           {currentStep === 2 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">
-                  Feature Configuration
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+                  Store Features Configuration
                 </h2>
-                <p className="text-slate-600">
-                  Enable or disable features for this store
+                <p className="text-slate-600 dark:text-slate-400">
+                  Enable or disable features for this store. These are
+                  store-level feature flags.
+                </p>
+              </div>
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-600 p-4 rounded-lg">
+                <p className="text-sm text-blue-700 dark:text-blue-400">
+                  <strong>Store Features:</strong> Control what functionality is
+                  available to the store owner. This is different from User Role
+                  Permissions (Step 4), which control what individual staff
+                  members can do.
                 </p>
               </div>
 
               {/* Billing */}
               <div className="border border-slate-200 rounded-xl p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">Billing</h3>
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">Billing</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                       Billing Status
                     </label>
                     <select
@@ -528,7 +546,7 @@ export default function NewStorePage() {
                           billing_status: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                      className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
                     >
                       <option value="pending">Pending</option>
                       <option value="active">Active</option>
@@ -537,7 +555,7 @@ export default function NewStorePage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                       Billing Paid Until
                     </label>
                     <input
@@ -549,7 +567,7 @@ export default function NewStorePage() {
                           billing_paid_until: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none"
+                      className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100"
                     />
                   </div>
                 </div>
@@ -557,7 +575,7 @@ export default function NewStorePage() {
 
               {/* Core Features */}
               <div className="border border-slate-200 rounded-xl p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
                   Core Features
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -584,7 +602,7 @@ export default function NewStorePage() {
                   ].map((feature) => (
                     <label
                       key={feature.key}
-                      className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer"
+                      className="flex items-center gap-3 p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer"
                     >
                       <input
                         type="checkbox"
@@ -601,7 +619,7 @@ export default function NewStorePage() {
                         }
                         className="w-5 h-5 text-primary-600 rounded focus:ring-primary-500"
                       />
-                      <span className="text-sm font-medium text-slate-700">
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                         {feature.label}
                       </span>
                     </label>
@@ -611,7 +629,7 @@ export default function NewStorePage() {
 
               {/* Communication Features */}
               <div className="border border-slate-200 rounded-xl p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
                   Communication Features
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -626,7 +644,7 @@ export default function NewStorePage() {
                   ].map((feature) => (
                     <label
                       key={feature.key}
-                      className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer"
+                      className="flex items-center gap-3 p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer"
                     >
                       <input
                         type="checkbox"
@@ -643,7 +661,7 @@ export default function NewStorePage() {
                         }
                         className="w-5 h-5 text-primary-600 rounded focus:ring-primary-500"
                       />
-                      <span className="text-sm font-medium text-slate-700">
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
                         {feature.label}
                       </span>
                     </label>
@@ -653,7 +671,7 @@ export default function NewStorePage() {
 
               {/* Additional Features */}
               <div className="border border-slate-200 rounded-xl p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
                   Additional
                 </h3>
                 <label className="flex items-center gap-3 p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer">
@@ -680,10 +698,10 @@ export default function NewStorePage() {
           {currentStep === 3 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                   Creation Limits
                 </h2>
-                <p className="text-slate-600">
+                <p className="text-slate-600 dark:text-slate-400">
                   Set maximum creation counts (leave empty for unlimited)
                 </p>
               </div>
@@ -712,7 +730,7 @@ export default function NewStorePage() {
                   },
                 ].map((limit) => (
                   <div key={limit.key}>
-                    <label className="block text-sm font-semibold text-slate-700 mb-2">
+                    <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                       {limit.label}
                     </label>
                     <input
@@ -725,7 +743,7 @@ export default function NewStorePage() {
                           [limit.key]: e.target.value,
                         })
                       }
-                      className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all"
+                      className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500"
                       placeholder={limit.placeholder}
                     />
                     <p className="text-xs text-slate-500 mt-1">
@@ -742,11 +760,12 @@ export default function NewStorePage() {
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-900 mb-2">
-                    Permissions Configuration
+                  <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+                    User Role Permissions Configuration
                   </h2>
-                  <p className="text-slate-600">
-                    Select which permissions are available for this store
+                  <p className="text-slate-600 dark:text-slate-400">
+                    Select which permissions are available for store owners to
+                    assign to their staff
                   </p>
                 </div>
                 <button
@@ -764,7 +783,7 @@ export default function NewStorePage() {
                 {Object.entries(groupedPermissions).map(([group, perms]) => (
                   <div
                     key={group}
-                    className="border border-slate-200 rounded-xl p-6"
+                    className="border border-slate-200 dark:border-slate-700 rounded-xl p-6"
                   >
                     <h3 className="font-semibold text-slate-900 mb-4 capitalize">
                       {group.replace("_", " ")}
@@ -773,7 +792,7 @@ export default function NewStorePage() {
                       {perms.map((perm) => (
                         <label
                           key={perm.permission_id}
-                          className="flex items-start gap-3 p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer"
+                          className="flex items-start gap-3 p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer"
                         >
                           <input
                             type="checkbox"
@@ -786,10 +805,10 @@ export default function NewStorePage() {
                             className="mt-1 w-5 h-5 text-primary-600 rounded focus:ring-primary-500"
                           />
                           <div className="flex-1">
-                            <div className="text-sm font-medium text-slate-700">
+                            <div className="text-sm font-medium text-slate-700 dark:text-slate-300">
                               {perm.permission_name}
                             </div>
-                            <div className="text-xs text-slate-500 mt-1">
+                            <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                               {perm.permission_description}
                             </div>
                           </div>
@@ -800,11 +819,22 @@ export default function NewStorePage() {
                 ))}
               </div>
 
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-                <p className="text-sm text-blue-800">
-                  <strong>Note:</strong> Selected permissions will be available
-                  for store owners to assign to their staff. Store owners can
-                  only assign permissions that are enabled here.
+              <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-600 p-4 rounded-lg">
+                <p className="text-sm text-blue-700 dark:text-blue-400">
+                  <strong>User Role Permissions:</strong> These permissions
+                  control what actions staff members can perform. Store owners
+                  can assign these permissions to different user roles (e.g.,
+                  Manager, Staff, etc.). Only permissions enabled here will be
+                  available for assignment.
+                </p>
+              </div>
+
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 dark:border-yellow-600 p-4 rounded-lg">
+                <p className="text-sm text-yellow-700 dark:text-yellow-400">
+                  <strong>Difference from Store Features:</strong> Store
+                  Features (Step 2) control what functionality is available to
+                  the store. User Role Permissions (this step) control what
+                  individual staff members can do within those features.
                 </p>
               </div>
             </div>
@@ -814,40 +844,40 @@ export default function NewStorePage() {
           {currentStep === 5 && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
                   Review
                 </h2>
-                <p className="text-slate-600">
+                <p className="text-slate-600 dark:text-slate-400">
                   Review all settings before creating the store
                 </p>
               </div>
 
               {/* Basic Info Review */}
               <div className="border border-slate-200 rounded-xl p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
                   Basic Information
                 </h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-slate-500">Store Name:</span>
+                    <span className="text-slate-500 dark:text-slate-400">Store Name:</span>
                     <p className="font-medium text-slate-900">
                       {basicInfo.store_name}
                     </p>
                   </div>
                   <div>
-                    <span className="text-slate-500">Owner Name:</span>
+                    <span className="text-slate-500 dark:text-slate-400">Owner Name:</span>
                     <p className="font-medium text-slate-900">
                       {basicInfo.owner_name}
                     </p>
                   </div>
                   <div>
-                    <span className="text-slate-500">Owner Email:</span>
+                    <span className="text-slate-500 dark:text-slate-400">Owner Email:</span>
                     <p className="font-medium text-slate-900">
                       {basicInfo.owner_email}
                     </p>
                   </div>
                   <div>
-                    <span className="text-slate-500">Owner Phone:</span>
+                    <span className="text-slate-500 dark:text-slate-400">Owner Phone:</span>
                     <p className="font-medium text-slate-900">
                       {basicInfo.owner_phone}
                     </p>
@@ -857,7 +887,7 @@ export default function NewStorePage() {
 
               {/* Features Review */}
               <div className="border border-slate-200 rounded-xl p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
                   Enabled Features
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -881,16 +911,16 @@ export default function NewStorePage() {
 
               {/* Limits Review */}
               <div className="border border-slate-200 rounded-xl p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
                   Creation Limits
                 </h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   {Object.entries(limits).map(([key, value]) => (
                     <div key={key}>
-                      <span className="text-slate-500">
+                      <span className="text-slate-500 dark:text-slate-400">
                         {key.replace("max_", "").replace(/_/g, " ")}:
                       </span>
-                      <p className="font-medium text-slate-900">
+                      <p className="font-medium text-slate-900 dark:text-slate-100">
                         {value || "Unlimited"}
                       </p>
                     </div>
@@ -900,7 +930,7 @@ export default function NewStorePage() {
 
               {/* Permissions Review */}
               <div className="border border-slate-200 rounded-xl p-6">
-                <h3 className="font-semibold text-slate-900 mb-4">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
                   Selected Permissions ({selectedPermissions.length})
                 </h3>
                 <div className="flex flex-wrap gap-2">
@@ -922,12 +952,12 @@ export default function NewStorePage() {
           )}
 
           {/* Navigation Buttons */}
-          <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200">
+          <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
             <button
               type="button"
               onClick={handlePrevious}
               disabled={currentStep === 1}
-              className="flex items-center gap-2 px-6 py-3 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-600 transition-all font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <ChevronLeft className="h-5 w-5" />
               Previous
