@@ -4,13 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { apiRequest, getAuthToken } from "@/utils/api";
 import Link from "next/link";
-import {
-  ArrowLeft,
-  Save,
-  ToggleLeft,
-  ToggleRight,
-  Settings,
-} from "lucide-react";
+import { ArrowLeft, Save, Settings } from "lucide-react";
 import { useToast } from "@/components/Toast";
 
 export default function StoreDetailPage() {
@@ -202,11 +196,15 @@ export default function StoreDetailPage() {
     label: string;
   }) => (
     <div className="flex items-center justify-between py-3 border-b border-slate-200 dark:border-slate-700">
-      <span className="text-sm font-medium text-gray-700 dark:text-slate-300">{label}</span>
+      <span className="text-sm font-medium text-gray-700 dark:text-slate-300">
+        {label}
+      </span>
       <button
         onClick={() => onChange(!enabled)}
         className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-          enabled ? "bg-blue-600 dark:bg-blue-500" : "bg-gray-300 dark:bg-slate-600"
+          enabled
+            ? "bg-blue-600 dark:bg-blue-500"
+            : "bg-gray-300 dark:bg-slate-600"
         }`}
       >
         <span
@@ -277,22 +275,34 @@ export default function StoreDetailPage() {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Store Info */}
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow mb-6 p-6 border border-slate-200 dark:border-slate-700">
-          <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-slate-100">Store Information</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-slate-100">
+            Store Information
+          </h2>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <p className="text-sm text-gray-600 dark:text-slate-400">Owner Name</p>
-              <p className="font-medium text-gray-900 dark:text-slate-100">{store.owner_name}</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">
+                Owner Name
+              </p>
+              <p className="font-medium text-gray-900 dark:text-slate-100">
+                {store.owner_name}
+              </p>
             </div>
             <div>
               <p className="text-sm text-gray-600 dark:text-slate-400">Email</p>
-              <p className="font-medium text-gray-900 dark:text-slate-100">{store.owner_email}</p>
+              <p className="font-medium text-gray-900 dark:text-slate-100">
+                {store.owner_email}
+              </p>
             </div>
             <div>
               <p className="text-sm text-gray-600 dark:text-slate-400">Phone</p>
-              <p className="font-medium text-gray-900 dark:text-slate-100">{store.owner_phone}</p>
+              <p className="font-medium text-gray-900 dark:text-slate-100">
+                {store.owner_phone}
+              </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-slate-400">Status</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">
+                Status
+              </p>
               <span
                 className={`px-2 py-1 text-xs rounded-full ${
                   store.is_active
@@ -304,7 +314,9 @@ export default function StoreDetailPage() {
               </span>
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-slate-400">Billing Status</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">
+                Billing Status
+              </p>
               <span
                 className={`px-2 py-1 text-xs rounded-full ${
                   features.billing_status === "active"
@@ -321,7 +333,9 @@ export default function StoreDetailPage() {
               </span>
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-slate-400">Billing Paid Until</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">
+                Billing Paid Until
+              </p>
               <p className="font-medium text-gray-900 dark:text-slate-100">
                 {features.billing_paid_until
                   ? new Date(features.billing_paid_until).toLocaleDateString()
@@ -329,11 +343,17 @@ export default function StoreDetailPage() {
               </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-slate-400">Customers</p>
-              <p className="font-medium text-gray-900 dark:text-slate-100">{store.customer_count}</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">
+                Customers
+              </p>
+              <p className="font-medium text-gray-900 dark:text-slate-100">
+                {store.customer_count}
+              </p>
             </div>
             <div>
-              <p className="text-sm text-gray-600 dark:text-slate-400">Total Revenue</p>
+              <p className="text-sm text-gray-600 dark:text-slate-400">
+                Total Revenue
+              </p>
               <p className="font-medium text-gray-900 dark:text-slate-100">
                 ₹{store.total_revenue?.toLocaleString() || 0}
               </p>
@@ -343,7 +363,9 @@ export default function StoreDetailPage() {
 
         {/* Billing Control */}
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow mb-6 p-6 border border-slate-200 dark:border-slate-700">
-          <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-slate-100">Billing Control</h2>
+          <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-slate-100">
+            Billing Control
+          </h2>
           <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { apiRequest, getAuthToken } from "@/utils/api";
 import Link from "next/link";
-import { ArrowLeft, Plus, X, Store, Trash2, Search } from "lucide-react";
+import { Plus, X, Store, Trash2, Search } from "lucide-react";
 import { useToast } from "@/components/Toast";
 import ConfirmModal from "@/components/ConfirmModal";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -22,7 +22,10 @@ export default function StoresPage() {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [deletingStoreId, setDeletingStoreId] = useState<number | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState<{ storeId: number; storeName: string } | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{
+    storeId: number;
+    storeName: string;
+  } | null>(null);
   const [formData, setFormData] = useState({
     store_name: "",
     owner_name: "",
@@ -66,9 +69,15 @@ export default function StoresPage() {
     if (debouncedSearchTerm) {
       filtered = filtered.filter(
         (store) =>
-          store.store_name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-          store.owner_name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
-          store.owner_email?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+          store.store_name
+            ?.toLowerCase()
+            .includes(debouncedSearchTerm.toLowerCase()) ||
+          store.owner_name
+            ?.toLowerCase()
+            .includes(debouncedSearchTerm.toLowerCase()) ||
+          store.owner_email
+            ?.toLowerCase()
+            .includes(debouncedSearchTerm.toLowerCase())
       );
     }
 
@@ -109,7 +118,9 @@ export default function StoresPage() {
         fetchStores();
         setConfirmDelete(null);
       } else {
-        toast.error("Failed to delete store: " + (response.message || "Unknown error"));
+        toast.error(
+          "Failed to delete store: " + (response.message || "Unknown error")
+        );
       }
     } catch (err: any) {
       toast.error("Error deleting store: " + err.message);
@@ -176,9 +187,13 @@ export default function StoresPage() {
           pincode: "",
         });
         fetchStores();
-        toast.success("Store created successfully! Owner credentials are displayed below.");
+        toast.success(
+          "Store created successfully! Owner credentials are displayed below."
+        );
       } else {
-        toast.error("Failed to create store: " + (response.message || "Unknown error"));
+        toast.error(
+          "Failed to create store: " + (response.message || "Unknown error")
+        );
       }
     } catch (err: any) {
       toast.error("Error creating store: " + err.message);
@@ -203,7 +218,9 @@ export default function StoresPage() {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">Stores</h1>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
+            Stores
+          </h1>
           <p className="text-slate-600 dark:text-slate-400 mt-1">
             Manage all stores in your platform
           </p>

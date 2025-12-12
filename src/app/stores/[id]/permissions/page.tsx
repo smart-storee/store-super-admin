@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { apiRequest, getAuthToken } from "@/utils/api";
 import Link from "next/link";
-import { ArrowLeft, Save, Check, X } from "lucide-react";
+import { ArrowLeft, Save } from "lucide-react";
 import { useToast } from "@/components/Toast";
 
 interface Permission {
@@ -263,7 +263,9 @@ export default function StorePermissionsPage() {
                     <button
                       onClick={() => handleTogglePermission(perm.permission_id)}
                       className={`ml-4 relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                        perm.store_enabled === 1 ? "bg-blue-600 dark:bg-blue-500" : "bg-gray-300 dark:bg-slate-600"
+                        perm.store_enabled === 1
+                          ? "bg-blue-600 dark:bg-blue-500"
+                          : "bg-gray-300 dark:bg-slate-600"
                       }`}
                     >
                       <span

@@ -11,7 +11,6 @@ import {
   BarChart3,
   Shield,
   CheckCircle2,
-  X,
   ChevronRight,
   ChevronLeft,
 } from "lucide-react";
@@ -176,7 +175,9 @@ export default function NewStorePage() {
         setCurrentStep(5);
         toast.success("Store created successfully!");
       } else {
-        toast.error("Failed to create store: " + (response.message || "Unknown error"));
+        toast.error(
+          "Failed to create store: " + (response.message || "Unknown error")
+        );
       }
     } catch (err: any) {
       toast.error("Error creating store: " + err.message);
@@ -532,7 +533,9 @@ export default function NewStorePage() {
 
               {/* Billing */}
               <div className="border border-slate-200 rounded-xl p-6">
-                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">Billing</h3>
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                  Billing
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
@@ -859,25 +862,33 @@ export default function NewStorePage() {
                 </h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-slate-500 dark:text-slate-400">Store Name:</span>
+                    <span className="text-slate-500 dark:text-slate-400">
+                      Store Name:
+                    </span>
                     <p className="font-medium text-slate-900">
                       {basicInfo.store_name}
                     </p>
                   </div>
                   <div>
-                    <span className="text-slate-500 dark:text-slate-400">Owner Name:</span>
+                    <span className="text-slate-500 dark:text-slate-400">
+                      Owner Name:
+                    </span>
                     <p className="font-medium text-slate-900">
                       {basicInfo.owner_name}
                     </p>
                   </div>
                   <div>
-                    <span className="text-slate-500 dark:text-slate-400">Owner Email:</span>
+                    <span className="text-slate-500 dark:text-slate-400">
+                      Owner Email:
+                    </span>
                     <p className="font-medium text-slate-900">
                       {basicInfo.owner_email}
                     </p>
                   </div>
                   <div>
-                    <span className="text-slate-500 dark:text-slate-400">Owner Phone:</span>
+                    <span className="text-slate-500 dark:text-slate-400">
+                      Owner Phone:
+                    </span>
                     <p className="font-medium text-slate-900">
                       {basicInfo.owner_phone}
                     </p>

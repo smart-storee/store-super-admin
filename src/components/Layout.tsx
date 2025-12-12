@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useRouter, usePathname } from 'next/navigation';
-import Link from 'next/link';
-import { logout, getAuthToken } from '@/utils/api';
-import { 
-  LayoutDashboard, 
-  Store, 
-  Receipt, 
-  LogOut, 
-  Menu, 
+import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
+import { logout } from "@/utils/api";
+import {
+  LayoutDashboard,
+  Store,
+  Receipt,
+  LogOut,
+  Menu,
   X,
   Moon,
-  Sun
-} from 'lucide-react';
-import { useState } from 'react';
-import { useTheme } from './ThemeProvider';
-import { ToastContainer } from './Toast';
+  Sun,
+} from "lucide-react";
+import { useState } from "react";
+import { useTheme } from "./ThemeProvider";
+import { ToastContainer } from "./Toast";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -29,17 +29,17 @@ export default function Layout({ children }: LayoutProps) {
 
   const handleLogout = () => {
     logout();
-    router.push('/login');
+    router.push("/login");
   };
 
   const navItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/stores', label: 'Stores', icon: Store },
-    { href: '/billing', label: 'Billing', icon: Receipt },
+    { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+    { href: "/stores", label: "Stores", icon: Store },
+    { href: "/billing", label: "Billing", icon: Receipt },
   ];
 
   // Don't show layout on login page
-  if (pathname === '/login' || pathname === '/') {
+  if (pathname === "/login" || pathname === "/") {
     return <>{children}</>;
   }
 
@@ -56,7 +56,7 @@ export default function Layout({ children }: LayoutProps) {
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 z-50 h-screen w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
@@ -66,7 +66,9 @@ export default function Layout({ children }: LayoutProps) {
               <h1 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
                 SaaS Store
               </h1>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Super Admin</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Super Admin
+              </p>
             </div>
             <button
               onClick={() => setSidebarOpen(false)}
@@ -80,7 +82,8 @@ export default function Layout({ children }: LayoutProps) {
           <nav className="flex-1 p-4 space-y-1">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+              const isActive =
+                pathname === item.href || pathname.startsWith(item.href + "/");
               return (
                 <Link
                   key={item.href}
@@ -88,11 +91,17 @@ export default function Layout({ children }: LayoutProps) {
                   onClick={() => setSidebarOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                     isActive
-                      ? 'bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 font-medium shadow-sm'
-                      : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-slate-100'
+                      ? "bg-primary-50 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 font-medium shadow-sm"
+                      : "text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-slate-900 dark:hover:text-slate-100"
                   }`}
                 >
-                  <Icon className={`h-5 w-5 ${isActive ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400 dark:text-slate-500'}`} />
+                  <Icon
+                    className={`h-5 w-5 ${
+                      isActive
+                        ? "text-primary-600 dark:text-primary-400"
+                        : "text-slate-400 dark:text-slate-500"
+                    }`}
+                  />
                   <span>{item.label}</span>
                 </Link>
               );
@@ -130,7 +139,7 @@ export default function Layout({ children }: LayoutProps) {
                 className="p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"
                 aria-label="Toggle theme"
               >
-                {theme === 'dark' ? (
+                {theme === "dark" ? (
                   <Sun className="h-5 w-5 text-slate-600 dark:text-slate-300" />
                 ) : (
                   <Moon className="h-5 w-5 text-slate-600 dark:text-slate-300" />
@@ -138,7 +147,9 @@ export default function Layout({ children }: LayoutProps) {
               </button>
               <div className="hidden sm:flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
                 <div className="h-8 w-8 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
-                  <span className="text-primary-700 dark:text-primary-400 font-semibold text-xs">SA</span>
+                  <span className="text-primary-700 dark:text-primary-400 font-semibold text-xs">
+                    SA
+                  </span>
                 </div>
                 <span className="font-medium">Super Admin</span>
               </div>

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { CheckCircle, XCircle, AlertCircle, X, Info } from 'lucide-react';
+import { useEffect, useState } from "react";
+import { CheckCircle, XCircle, AlertCircle, X, Info } from "lucide-react";
 
-export type ToastType = 'success' | 'error' | 'warning' | 'info';
+export type ToastType = "success" | "error" | "warning" | "info";
 
 export interface Toast {
   id: string;
@@ -38,10 +38,13 @@ function ToastItem({ toast, onRemove }: ToastProps) {
   };
 
   const colors = {
-    success: 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-300',
-    error: 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300',
-    warning: 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-300',
-    info: 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300',
+    success:
+      "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-800 dark:text-green-300",
+    error:
+      "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-800 dark:text-red-300",
+    warning:
+      "bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800 text-yellow-800 dark:text-yellow-300",
+    info: "bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800 text-blue-800 dark:text-blue-300",
   };
 
   const Icon = icons[toast.type];
@@ -49,7 +52,7 @@ function ToastItem({ toast, onRemove }: ToastProps) {
   return (
     <div
       className={`flex items-start gap-3 p-4 rounded-lg border shadow-lg min-w-[300px] max-w-md transform transition-all duration-300 ${
-        isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        isVisible ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"
       } ${colors[toast.type]}`}
     >
       <Icon className="h-5 w-5 flex-shrink-0 mt-0.5" />
@@ -71,7 +74,7 @@ let toastIdCounter = 0;
 const toasts: Toast[] = [];
 let listeners: Array<(toasts: Toast[]) => void> = [];
 
-function addToast(toast: Omit<Toast, 'id'>) {
+function addToast(toast: Omit<Toast, "id">) {
   const id = `toast-${++toastIdCounter}`;
   const newToast = { ...toast, id };
   toasts.push(newToast);
@@ -102,16 +105,24 @@ export function useToast() {
     };
   }, []);
 
-  const showToast = (message: string, type: ToastType = 'info', duration?: number) => {
+  const showToast = (
+    message: string,
+    type: ToastType = "info",
+    duration?: number
+  ) => {
     return addToast({ message, type, duration });
   };
 
   return {
     toast: showToast,
-    success: (message: string, duration?: number) => showToast(message, 'success', duration),
-    error: (message: string, duration?: number) => showToast(message, 'error', duration),
-    warning: (message: string, duration?: number) => showToast(message, 'warning', duration),
-    info: (message: string, duration?: number) => showToast(message, 'info', duration),
+    success: (message: string, duration?: number) =>
+      showToast(message, "success", duration),
+    error: (message: string, duration?: number) =>
+      showToast(message, "error", duration),
+    warning: (message: string, duration?: number) =>
+      showToast(message, "warning", duration),
+    info: (message: string, duration?: number) =>
+      showToast(message, "info", duration),
     toasts: toastList,
     removeToast,
   };

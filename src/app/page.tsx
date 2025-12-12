@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
     // Check if user is logged in
-    const token = localStorage.getItem('superAdminToken');
+    const token = localStorage.getItem("superAdminToken");
     if (token) {
-      router.push('/dashboard');
+      router.push("/dashboard");
     } else {
-      router.push('/login');
+      router.push("/login");
     }
   }, [router]);
 

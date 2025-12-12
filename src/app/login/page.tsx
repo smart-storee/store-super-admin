@@ -1,37 +1,37 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { login, getAuthToken } from '@/utils/api';
-import { Lock, Mail, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { login, getAuthToken } from "@/utils/api";
+import { Lock, Mail, AlertCircle } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (getAuthToken()) {
-      router.push('/dashboard');
+      router.push("/dashboard");
     }
   }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
       const response = await login(email, password);
       if (response.success) {
-        router.push('/dashboard');
+        router.push("/dashboard");
       } else {
-        setError(response.message || 'Login failed');
+        setError(response.message || "Login failed");
       }
     } catch (err: any) {
-      setError(err.message || 'Login failed. Please try again.');
+      setError(err.message || "Login failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -45,8 +45,12 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary-500 to-primary-600 rounded-2xl shadow-lg mb-4">
             <Lock className="h-8 w-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">Super Admin Portal</h1>
-          <p className="text-slate-600 dark:text-slate-400">Sign in to manage stores and billing</p>
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+            Super Admin Portal
+          </h1>
+          <p className="text-slate-600 dark:text-slate-400">
+            Sign in to manage stores and billing
+          </p>
         </div>
 
         {/* Login Card */}
@@ -60,7 +64,10 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -78,7 +85,10 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2"
+              >
                 Password
               </label>
               <div className="relative">
@@ -106,7 +116,7 @@ export default function LoginPage() {
                   Signing in...
                 </span>
               ) : (
-                'Sign In'
+                "Sign In"
               )}
             </button>
           </form>
