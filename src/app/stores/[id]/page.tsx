@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { apiRequest, getAuthToken } from "@/utils/api";
 import Link from "next/link";
-import { ArrowLeft, Save, Settings } from "lucide-react";
+import { ArrowLeft, Save, Settings, Bell } from "lucide-react";
 import { useToast } from "@/components/Toast";
 
 export default function StoreDetailPage() {
@@ -260,6 +260,13 @@ export default function StoreDetailPage() {
               </h1>
             </div>
             <div className="flex items-center gap-3">
+              <Link
+                href={`/stores/${storeId}/notification-templates`}
+                className="flex items-center gap-2 text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300 px-4 py-2 rounded-lg hover:bg-purple-50 dark:hover:bg-purple-900/20 border border-purple-200 dark:border-purple-800"
+              >
+                <Bell className="h-4 w-4" />
+                Notification Templates
+              </Link>
               <Link
                 href={`/stores/${storeId}/permissions`}
                 className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 px-4 py-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 border border-blue-200 dark:border-blue-800"

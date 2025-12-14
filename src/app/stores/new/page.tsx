@@ -78,6 +78,11 @@ export default function NewStorePage() {
     max_branches: "",
   });
 
+  // Step 5: Notification Templates
+  const [notificationTemplates, setNotificationTemplates] = useState<string[]>(
+    ["order_created", "order_confirmed"] // Default: only 2 templates
+  );
+
   useEffect(() => {
     if (!getAuthToken()) {
       router.push("/login");
@@ -134,7 +139,7 @@ export default function NewStorePage() {
 
   const handleNext = () => {
     if (validateStep(currentStep)) {
-      setCurrentStep((prev) => Math.min(prev + 1, 5));
+      setCurrentStep((prev) => Math.min(prev + 1, 6));
     }
   };
 
@@ -151,6 +156,7 @@ export default function NewStorePage() {
         ...features,
         ...limits,
         permissions: selectedPermissions,
+        notification_templates: notificationTemplates,
         max_categories: limits.max_categories
           ? parseInt(limits.max_categories)
           : null,
@@ -172,7 +178,7 @@ export default function NewStorePage() {
 
       if (response.success) {
         setCreatedCredentials(response.data.owner_credentials);
-        setCurrentStep(5);
+        setCurrentStep(6);
         toast.success("Store created successfully!");
       } else {
         toast.error(
@@ -191,7 +197,8 @@ export default function NewStorePage() {
     { id: 2, name: "Features", icon: Settings },
     { id: 3, name: "Limits", icon: BarChart3 },
     { id: 4, name: "Permissions", icon: Shield },
-    { id: 5, name: "Review", icon: CheckCircle2 },
+    { id: 5, name: "Notification Templates", icon: Settings },
+    { id: 6, name: "Review", icon: CheckCircle2 },
   ];
 
   const groupedPermissions = permissions.reduce((acc, perm) => {
@@ -843,8 +850,170 @@ export default function NewStorePage() {
             </div>
           )}
 
-          {/* Step 5: Review */}
+          {/* Step 5: Notification Templates */}
           {currentStep === 5 && (
+            <div className="space-y-6">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
+                  Notification Templates
+                </h2>
+                <p className="text-slate-600 dark:text-slate-400">
+                  Select which notification templates to create for this store.
+                  These templates will be used for order status notifications.
+                </p>
+              </div>
+
+              <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-600 p-4 rounded-lg">
+                <p className="text-sm text-blue-700 dark:text-blue-400">
+                  <strong>Notification Templates:</strong> These templates
+                  define the messages sent to customers and store owners for
+                  different order events. You can customize them later from the
+                  store settings.
+                </p>
+              </div>
+
+              <div className="border border-slate-200 dark:border-slate-700 rounded-xl p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-slate-900 dark:text-slate-100">
+                    Available Templates
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const allTemplates = [
+                        "order_created",
+                        "order_confirmed",
+                        "order_preparing",
+                        "order_ready",
+                        "order_out_for_delivery",
+                        "order_delivered",
+                        "order_cancelled",
+                        "order_cancelled_by_customer",
+                        "order_cancelled_by_store",
+                      ];
+                      if (
+                        notificationTemplates.length === allTemplates.length
+                      ) {
+                        setNotificationTemplates([
+                          "order_created",
+                          "order_confirmed",
+                        ]);
+                      } else {
+                        setNotificationTemplates(allTemplates);
+                      }
+                    }}
+                    className="text-sm text-primary-600 dark:text-primary-400 hover:underline"
+                  >
+                    {notificationTemplates.length === 9
+                      ? "Select Default (2)"
+                      : "Select All"}
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {[
+                    {
+                      event_type: "order_created",
+                      name: "Order Created",
+                      description:
+                        "Sent to store owner when a new order is placed",
+                    },
+                    {
+                      event_type: "order_confirmed",
+                      name: "Order Confirmed",
+                      description:
+                        "Sent to customer when order is confirmed by store",
+                    },
+                    {
+                      event_type: "order_preparing",
+                      name: "Order Preparing",
+                      description:
+                        "Sent to customer when order preparation starts",
+                    },
+                    {
+                      event_type: "order_ready",
+                      name: "Order Ready",
+                      description:
+                        "Sent to customer when order is ready for pickup/delivery",
+                    },
+                    {
+                      event_type: "order_out_for_delivery",
+                      name: "Order Out for Delivery",
+                      description:
+                        "Sent to customer when order is out for delivery",
+                    },
+                    {
+                      event_type: "order_delivered",
+                      name: "Order Delivered",
+                      description:
+                        "Sent to customer when order is successfully delivered",
+                    },
+                    {
+                      event_type: "order_cancelled",
+                      name: "Order Cancelled",
+                      description:
+                        "Sent to customer when order is cancelled (generic)",
+                    },
+                    {
+                      event_type: "order_cancelled_by_customer",
+                      name: "Order Cancelled by Customer",
+                      description:
+                        "Sent to store owner when customer cancels order",
+                    },
+                    {
+                      event_type: "order_cancelled_by_store",
+                      name: "Order Cancelled by Store",
+                      description:
+                        "Sent to customer when store cancels the order",
+                    },
+                  ].map((template) => (
+                    <label
+                      key={template.event_type}
+                      className="flex items-start gap-3 p-3 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={notificationTemplates.includes(
+                          template.event_type
+                        )}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setNotificationTemplates([
+                              ...notificationTemplates,
+                              template.event_type,
+                            ]);
+                          } else {
+                            setNotificationTemplates(
+                              notificationTemplates.filter(
+                                (t) => t !== template.event_type
+                              )
+                            );
+                          }
+                        }}
+                        className="mt-1 w-5 h-5 text-primary-600 rounded focus:ring-primary-500"
+                      />
+                      <div className="flex-1">
+                        <div className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                          {template.name}
+                        </div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                          {template.description}
+                        </div>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+
+                <div className="mt-4 text-sm text-slate-600 dark:text-slate-400">
+                  <strong>Selected:</strong> {notificationTemplates.length} of 9
+                  templates
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Step 6: Review */}
+          {currentStep === 6 && (
             <div className="space-y-6">
               <div>
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-2">
@@ -959,6 +1128,56 @@ export default function NewStorePage() {
                     ))}
                 </div>
               </div>
+
+              {/* Notification Templates Review */}
+              <div className="border border-slate-200 rounded-xl p-6">
+                <h3 className="font-semibold text-slate-900 dark:text-slate-100 mb-4">
+                  Notification Templates ({notificationTemplates.length})
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { event_type: "order_created", name: "Order Created" },
+                    {
+                      event_type: "order_confirmed",
+                      name: "Order Confirmed",
+                    },
+                    {
+                      event_type: "order_preparing",
+                      name: "Order Preparing",
+                    },
+                    { event_type: "order_ready", name: "Order Ready" },
+                    {
+                      event_type: "order_out_for_delivery",
+                      name: "Order Out for Delivery",
+                    },
+                    {
+                      event_type: "order_delivered",
+                      name: "Order Delivered",
+                    },
+                    {
+                      event_type: "order_cancelled",
+                      name: "Order Cancelled",
+                    },
+                    {
+                      event_type: "order_cancelled_by_customer",
+                      name: "Order Cancelled by Customer",
+                    },
+                    {
+                      event_type: "order_cancelled_by_store",
+                      name: "Order Cancelled by Store",
+                    },
+                  ]
+                    .filter((t) => notificationTemplates.includes(t.event_type))
+                    .map((template) => (
+                      <span
+                        key={template.event_type}
+                        className="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-medium"
+                      >
+                        {template.name}
+                      </span>
+                    ))}
+                </div>
+              </div>
             </div>
           )}
 
@@ -974,7 +1193,7 @@ export default function NewStorePage() {
               Previous
             </button>
 
-            {currentStep < 5 ? (
+            {currentStep < 6 ? (
               <button
                 type="button"
                 onClick={handleNext}
