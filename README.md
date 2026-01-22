@@ -1,4 +1,4 @@
-# SaaS Store Super Admin Portal
+# SaaS Store Admin Portal
 
 A comprehensive super admin portal for managing multiple stores, billing, permissions, and platform-wide analytics in a SaaS e-commerce platform.
 

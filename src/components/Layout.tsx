@@ -64,7 +64,7 @@ export default function Layout({ children }: LayoutProps) {
           <div className="flex items-center justify-between p-6 border-b border-slate-200 dark:border-slate-700">
             <div>
               <h1 className="text-xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">
-                SaaS Store
+                Smart Store
               </h1>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                 Super Admin

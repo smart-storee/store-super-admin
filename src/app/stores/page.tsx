@@ -285,25 +285,25 @@ export default function StoresPage() {
                 <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Store Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Owner
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Email
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Phone
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Billing Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Features
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -355,7 +355,7 @@ export default function StoresPage() {
                             ? "bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400"
                             : store.billing_status === "expired"
                             ? "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400"
-                            : "bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300"
+                            : "bg-gray-100 dark:bg-slate-800/30 text-gray-800 dark:text-slate-400"
                         }`}
                       >
                         {store.billing_status
@@ -395,10 +395,10 @@ export default function StoresPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2">
                         <Link
                           href={`/stores/${store.store_id}`}
-                          className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium transition-colors"
+                          className="px-3 py-1.5 text-sm rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors font-medium"
                         >
                           Manage
                         </Link>
@@ -407,7 +407,7 @@ export default function StoresPage() {
                             handleDeleteStore(store.store_id, store.store_name)
                           }
                           disabled={deletingStoreId === store.store_id}
-                          className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="p-1.5 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-800/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                           title="Delete store"
                         >
                           <Trash2 className="h-4 w-4" />

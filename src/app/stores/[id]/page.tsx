@@ -279,7 +279,7 @@ export default function StoreDetailPage() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="lg:py-8">
         {/* Store Info */}
         <div className="bg-white dark:bg-slate-800 rounded-lg shadow mb-6 p-6 border border-slate-200 dark:border-slate-700">
           <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-slate-100">
@@ -375,7 +375,7 @@ export default function StoreDetailPage() {
           </h2>
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                 Billing Status
               </label>
               <select
@@ -386,7 +386,7 @@ export default function StoreDetailPage() {
                     billing_status: e.target.value as any,
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100"
               >
                 <option value="pending">Pending</option>
                 <option value="active">Active</option>
@@ -395,7 +395,7 @@ export default function StoreDetailPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                 Billing Paid Until
               </label>
               <input
@@ -407,11 +407,11 @@ export default function StoreDetailPage() {
                     billing_paid_until: e.target.value || null,
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                 Last Billing Date
               </label>
               <input
@@ -423,13 +423,13 @@ export default function StoreDetailPage() {
                     last_billing_date: e.target.value || null,
                   })
                 }
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100"
               />
             </div>
           </div>
-          <p className="mt-3 text-xs text-gray-500">
+          <p className="mt-3 text-xs text-gray-500 dark:text-slate-400">
             {features.billing_status !== "active" && (
-              <span className="text-red-600 font-semibold">
+              <span className="text-red-600 dark:text-red-400 font-semibold">
                 ⚠️ Features will be disabled when billing status is not "active"
               </span>
             )}
@@ -437,11 +437,11 @@ export default function StoreDetailPage() {
         </div>
 
         {/* Store Features Section */}
-        <div className="bg-white rounded-lg shadow p-6 mb-6">
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow p-6 mb-6">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h2 className="text-lg font-semibold">Store Features</h2>
-              <p className="text-sm text-gray-600 mt-1">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-slate-100">Store Features</h2>
+              <p className="text-sm text-gray-600 dark:text-slate-400 mt-1">
                 Control which features are available for this store. These are
                 store-level feature flags.
               </p>
@@ -449,15 +449,15 @@ export default function StoreDetailPage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 dark:hover:bg-blue-800"
             >
               <Save className="h-4 w-4" />
               {saving ? "Saving..." : "Save Features"}
             </button>
           </div>
 
-          <div className="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
-            <p className="text-sm text-blue-700">
+          <div className="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-400 dark:border-blue-600 p-4 mb-6">
+            <p className="text-sm text-blue-700 dark:text-blue-400">
               <strong>Note:</strong> Store Features control what functionality
               is available to the store owner. User Role Permissions (managed
               separately) control what individual staff members can do.
@@ -591,13 +591,13 @@ export default function StoreDetailPage() {
             />
           </div>
 
-          <div className="mt-6 pt-6 border-t">
-            <h3 className="text-md font-semibold mb-4">
+          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-slate-700">
+            <h3 className="text-md font-semibold text-gray-900 dark:text-slate-100 mb-4">
               Limits (Leave empty for unlimited)
             </h3>
             <div className="grid grid-cols-4 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                   Max Categories
                 </label>
                 <input
@@ -611,12 +611,12 @@ export default function StoreDetailPage() {
                         : null,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
                   placeholder="Unlimited"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                   Max Products
                 </label>
                 <input
@@ -630,12 +630,12 @@ export default function StoreDetailPage() {
                         : null,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
                   placeholder="Unlimited"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                   Max Variants
                 </label>
                 <input
@@ -649,12 +649,12 @@ export default function StoreDetailPage() {
                         : null,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
                   placeholder="Unlimited"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">
                   Max Branches
                 </label>
                 <input
@@ -668,7 +668,7 @@ export default function StoreDetailPage() {
                         : null,
                     })
                   }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-gray-900 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-500"
                   placeholder="Unlimited"
                 />
               </div>

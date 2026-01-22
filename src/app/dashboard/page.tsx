@@ -21,9 +21,9 @@ interface DashboardData {
     total_customers: number;
     total_revenue: number;
     total_orders: number;
-    total_categories: number;
-    total_products: number;
-    total_variants: number;
+    // total_categories: number;
+    // total_products: number;
+    // total_variants: number;
   };
   top_products: Array<{
     product_id: number;
@@ -134,30 +134,30 @@ export default function DashboardPage() {
       bg: "bg-orange-50",
       iconColor: "text-orange-600",
     },
-    {
-      title: "Categories",
-      value: data.summary.total_categories,
-      icon: Layers,
-      color: "from-pink-500 to-pink-600",
-      bg: "bg-pink-50",
-      iconColor: "text-pink-600",
-    },
-    {
-      title: "Products",
-      value: data.summary.total_products,
-      icon: Package,
-      color: "from-indigo-500 to-indigo-600",
-      bg: "bg-indigo-50",
-      iconColor: "text-indigo-600",
-    },
-    {
-      title: "Variants",
-      value: data.summary.total_variants,
-      icon: TrendingUp,
-      color: "from-teal-500 to-teal-600",
-      bg: "bg-teal-50",
-      iconColor: "text-teal-600",
-    },
+    // {
+    //   title: "Categories",
+    //   value: data.summary.total_categories,
+    //   icon: Layers,
+    //   color: "from-pink-500 to-pink-600",
+    //   bg: "bg-pink-50",
+    //   iconColor: "text-pink-600",
+    // },
+    // {
+    //   title: "Products",
+    //   value: data.summary.total_products,
+    //   icon: Package,
+    //   color: "from-indigo-500 to-indigo-600",
+    //   bg: "bg-indigo-50",
+    //   iconColor: "text-indigo-600",
+    // },
+    // {
+    //   title: "Variants",
+    //   value: data.summary.total_variants,
+    //   icon: TrendingUp,
+    //   color: "from-teal-500 to-teal-600",
+    //   bg: "bg-teal-50",
+    //   iconColor: "text-teal-600",
+    // },
   ];
 
   return (
@@ -373,7 +373,7 @@ export default function DashboardPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <Link
                         href={`/stores/${store.store_id}`}
-                        className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-medium transition-colors"
+                        className="px-3 py-1.5 text-sm rounded-lg bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-800/50 transition-colors font-medium"
                       >
                         View
                       </Link>
