@@ -211,7 +211,7 @@ export default function NewStorePage() {
 
   if (createdCredentials) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-6">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-8">
             <div className="text-center mb-8">
